@@ -88,8 +88,6 @@ export default function App() {
   console.log(noteNameItem, "note name test out");
   return (
     <div className="App background--items h-100">
-      amirmohammad
-      darvishi
       <div className="">
         <div className="">
           <Split
