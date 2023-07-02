@@ -42,7 +42,7 @@ export default function App() {
 
   function saveNoteItemName(id) {
     console.log(noteNameItem, "method");
-    notes.find((item, index) => item.id === id && (item.title = noteNameItem));
+    notes.find((item) => item.id === id && (item.title = noteNameItem));
   }
 
   // function CancelNameItemNote() {
