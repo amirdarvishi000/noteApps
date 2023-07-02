@@ -24,6 +24,7 @@ export default function App() {
   const [noteNameItem, setNoteNameItem] = useState(
     notes.length > 0 && notes[0].title
   );
+  
   useEffect(() => {
     console.log("testt");
   }, [idNoteActive]);
