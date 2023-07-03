@@ -10,6 +10,7 @@ import { v4 as uuidv4 } from "uuid";
 import Split from "react-split";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SunEditor from "./Components/suneditor";
+
 export default function App() {
 	const data = JSON.parse(localStorage.getItem("notes"));
 	const [notes, setNotes] = useState(data ? data : Data);
@@ -28,70 +29,73 @@ export default function App() {
 	useEffect(() => {
 		console.log("testt");
 	}, [idNoteActive]);
+
 	useEffect(() => {
 		localStorage.setItem("notes", JSON.stringify(notes));
-	});
+	}, [notes]);
+
 	useEffect(() => {
 		saveNoteItemName(idNoteActive);
 	}, [noteNameItem]);
+
 	useEffect(() => {
-		notes.find(
-			item => item.id === idNoteActive && (item.body = textEreaNote)
+		const updatedNotes = notes.map(item =>
+			item.id === idNoteActive
+				? { ...item, body: textEreaNote }
+				: item
 		);
-		localStorage.setItem("notes", JSON.stringify(notes));
+		setNotes(updatedNotes);
+		localStorage.setItem("notes", JSON.stringify(updatedNotes));
 	}, [textEreaNote]);
 
 	function saveNoteItemName(id) {
 		console.log(noteNameItem, "method");
-		notes.find(item => item.id === id && (item.title = noteNameItem));
+		const updatedNotes = notes.map(item =>
+			item.id === id ? { ...item, title: noteNameItem } : item
+		);
+		setNotes(updatedNotes);
 	}
 
-	// function CancelNameItemNote() {
-	//   setBoolEditNameNotes((perv) => !perv);
-	// }
 	function noteItemName(e) {
 		e.target.value.length < 16 && setNoteNameItem(e.target.value);
 	}
+
 	function noteAddItem() {
-		setNotes(perv => [
-			...perv,
-			{
-				id: uuidv4(),
-				title: `Note${perv.length + 1}`,
-				body: "",
-			},
-		]);
+		const newNote = {
+			id: uuidv4(),
+			title: `Note${notes.length + 1}`,
+			body: "",
+		};
+		setNotes(prev => [...prev, newNote]);
 	}
+
 	function noteItemDelete(id) {
-		setNotes(perv => perv.filter(item => item.id !== id));
-		console.log(noteNameItem, "note name test");
-		notes.find(
-			item =>
-				item.id !== idNoteActive &&
-				console.log("find", idNoteActive),
-			(setNoteNameItem(""),
-			setTextEreaNote(""),
-			setIdNoteActive(""))
-		);
-		console.log(noteNameItem, "note name test");
+		const updatedNotes = notes.filter(item => item.id !== id);
+		setNotes(updatedNotes);
+		if (id === idNoteActive) {
+			setNoteNameItem("");
+			setTextEreaNote("");
+			setIdNoteActive("");
+		}
 	}
+
 	function handleText(id) {
-		console.log("handle text test");
-		notes.find(
-			item =>
-				item.id === id &&
-				(setIdNoteActive(item.id),
-				setTextEreaNote(item.body),
-				setNoteNameItem(item.title))
-		);
+		const activeNote = notes.find(item => item.id === id);
+		if (activeNote) {
+			setIdNoteActive(activeNote.id);
+			setTextEreaNote(activeNote.body);
+			setNoteNameItem(activeNote.title);
+		}
 	}
+
 	console.log(noteNameItem, "note name test out");
+
 	return (
 		<div className="App background--items h-100">
 			<div className="">
 				<div className="">
 					<Split
-						class="wrap  p-0 w-100"
+						className="wrap  p-0 w-100"
 						sizes={[10, 15, 75]}
 						minSize={100}
 						expandToMin={false}
@@ -108,11 +112,11 @@ export default function App() {
 							<button
 								onClick={() => noteAddItem()}
 								type="button"
-								class="list-group-item text-center text-white bg-primary active list-group-item-action"
+								className="list-group-item text-center text-white bg-primary active list-group-item-action"
 								aria-current="true">
 								<AddIcon></AddIcon>
 							</button>
-							<ul class="list-group text-center list-group-flush ">
+							<ul className="list-group text-center list-group-flush ">
 								{notes.map(note => (
 									<li
 										key={note.id}
@@ -127,7 +131,7 @@ export default function App() {
 												note.id ? (
 												<div>
 													<input
-														class="form-control unFocus rounded-0"
+														className="form-control unFocus rounded-0"
 														defaultValue={
 															note.title
 														}
@@ -200,7 +204,7 @@ export default function App() {
 							</ul>
 						</div>
 						<div className="col-10 pt-1 border">
-							<div class="form-group ">
+							<div className="form-group ">
 								<input
 									onChange={e => {
 										noteItemName(e);
