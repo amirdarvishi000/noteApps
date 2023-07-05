@@ -1,6 +1,6 @@
-import "./styles.css";
-import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./styles.css";
 import CheckIcon from "@mui/icons-material/Check";
 import ClearIcon from "@mui/icons-material/Clear";
 import AddIcon from "@mui/icons-material/Add";
@@ -11,7 +11,7 @@ import Split from "react-split";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
 import SunEditor from "./Components/suneditor";
 
-export default function App() {
+function App() {
 	//get data from localStorage
 	const dataFromLStorage = JSON.parse(localStorage.getItem("notes"));
 
@@ -77,7 +77,7 @@ export default function App() {
 	function noteAddItem() {
 		const newNote = {
 			id: uuidv4(),
-			title: `Note${notes.length + 1}`,
+			title: `Note ${notes.length + 1}`,
 			body: "",
 		};
 		setNotes(prev => [...prev, newNote]);
@@ -251,3 +251,4 @@ export default function App() {
 		</div>
 	);
 }
+export default App;
