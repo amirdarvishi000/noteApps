@@ -15,9 +15,7 @@ function App() {
 	//get data from localStorage
 	const dataFromLStorage = JSON.parse(localStorage.getItem("notes"));
 
-	const [notes, setNotes] = useState(
-		dataFromLStorage ? dataFromLStorage : DataFromJson
-	);
+	const [notes, setNotes] = useState(dataFromLStorage || DataFromJson);
 
 	const [textAreaNote, setTextAreaNote] = useState(
 		notes.length > 0 && notes[0].body
@@ -215,7 +213,7 @@ function App() {
 								))}
 							</ul>
 						</div>
-						<div className="col-10 pt-1 border">
+						<div className="col-10  border">
 							<div className="form-group ">
 								<input
 									onChange={e => {
@@ -228,7 +226,7 @@ function App() {
 									}}
 									value={noteNameItem}
 									type="text"
-									className="title-bar unFocus border-0 rounded-0 mb-2 mr-sm-2"
+									className="title-bar text-bold m-0 unFocus border-0 rounded-0 mb-2 mr-sm-2"
 									id="inlineFormInputName2"
 									placeholder="title"
 								/>
